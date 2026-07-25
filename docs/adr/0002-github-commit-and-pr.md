@@ -26,16 +26,16 @@ GitHubの活動として何を取得・保存するかを決める必要があ�
 
 ### テーブル: github_activities
 
-| カラム | 型 | NULL | 説明 |
-|---|---|---|---|
-| id | 主キー(自動採番) | 不可 | 内部ID |
-| type | enum(commit / pull_request) | 不可 | 種別 |
-| external_id | 文字列 | 不可 | コミットSHA or PR番号。一意キーの一部 |
-| repository | 文字列 | 不可 | owner/repo 形式。一意キーの一部 |
-| title | 文字列 | 不可 | コミットメッセージ or PRタイトル |
-| url | 文字列 | 不可 | 該当ページへのリンク(一覧表示用) |
-| activity_date | 日時 | 可 | commit日時 or PRマージ日時。未マージPRはNULL |
-| created_at | 日時 | 不可 | DBへ保存した日時 |
+| カラム        | 型                          | NULL | 説明                                         |
+| ------------- | --------------------------- | ---- | -------------------------------------------- |
+| id            | 主キー(自動採番)            | 不可 | 内部ID                                       |
+| type          | enum(commit / pull_request) | 不可 | 種別                                         |
+| external_id   | 文字列                      | 不可 | コミットSHA or PR番号。一意キーの一部        |
+| repository    | 文字列                      | 不可 | owner/repo 形式。一意キーの一部              |
+| title         | 文字列                      | 不可 | コミットメッセージ or PRタイトル             |
+| url           | 文字列                      | 不可 | 該当ページへのリンク(一覧表示用)             |
+| activity_date | 日時                        | 可   | commit日時 or PRマージ日時。未マージPRはNULL |
+| created_at    | 日時                        | 不可 | DBへ保存した日時                             |
 
 - 一意制約: `(type, repository, external_id)` の3点で一意
 - カラム名 `activity_date` は汎用名とし、中身(何の日時か)はソースごとに定義する

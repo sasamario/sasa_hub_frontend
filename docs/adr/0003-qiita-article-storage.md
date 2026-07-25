@@ -28,19 +28,19 @@ GitHubの活動データ(コミット/PR)と異なり、Qiitaのいいね数・�
 
 ### テーブル: qiita_articles
 
-| カラム | 型 | NULL | 説明 |
-|---|---|---|---|
-| id | 主キー(自動採番) | 不可 | 内部ID |
-| external_id | 文字列 | 不可 | Qiita記事ID。一意キー |
-| title | 文字列 | 不可 | 記事タイトル |
-| url | 文字列 | 不可 | 記事URL(一覧表示用) |
-| activity_date | 日時 | 不可 | 記事の投稿日時(created_at)。集計・並び替えの軸 |
-| likes_count | 整数 | 不可 | いいね数(同期時に上書き) |
-| stocks_count | 整数 | 不可 | ストック数(同期時に上書き) |
-| page_views_count | 整数 | 可 | PV数(個別API取得。失敗時はNULL) |
-| synced_at | 日時 | 不可 | 最後にQiitaから取得した日時(指標の鮮度を示す) |
-| created_at | 日時 | 不可 | DBへ保存した日時(自動) |
-| updated_at | 日時 | 不可 | レコード更新日時(Prismaの @updatedAt で自動管理) |
+| カラム           | 型               | NULL | 説明                                             |
+| ---------------- | ---------------- | ---- | ------------------------------------------------ |
+| id               | 主キー(自動採番) | 不可 | 内部ID                                           |
+| external_id      | 文字列           | 不可 | Qiita記事ID。一意キー                            |
+| title            | 文字列           | 不可 | 記事タイトル                                     |
+| url              | 文字列           | 不可 | 記事URL(一覧表示用)                              |
+| activity_date    | 日時             | 不可 | 記事の投稿日時(created_at)。集計・並び替えの軸   |
+| likes_count      | 整数             | 不可 | いいね数(同期時に上書き)                         |
+| stocks_count     | 整数             | 不可 | ストック数(同期時に上書き)                       |
+| page_views_count | 整数             | 可   | PV数(個別API取得。失敗時はNULL)                  |
+| synced_at        | 日時             | 不可 | 最後にQiitaから取得した日時(指標の鮮度を示す)    |
+| created_at       | 日時             | 不可 | DBへ保存した日時(自動)                           |
+| updated_at       | 日時             | 不可 | レコード更新日時(Prismaの @updatedAt で自動管理) |
 
 - 一意キー: `external_id`(Qiita全体で一意なため単独で可)
 - `activity_date` はソース横断の共通カラム名。Qiitaでは投稿日時が入る。

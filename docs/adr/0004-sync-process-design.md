@@ -32,15 +32,15 @@
 
 同期を実行するたびに1レコードを追加(INSERT)していく。既存レコードの上書きはしない。
 
-| カラム | 説明 |
-|---|---|
-| id | 主キー |
-| source | github / qiita |
-| repository | GitHubの場合の対象リポジトリ名。Qiitaでは NULL |
-| status | success / failed |
-| started_at | 同期開始日時(差分取得の起点として使用) |
-| finished_at | 同期完了日時 |
-| message | エラー内容など(任意) |
+| カラム      | 説明                                           |
+| ----------- | ---------------------------------------------- |
+| id          | 主キー                                         |
+| source      | github / qiita                                 |
+| repository  | GitHubの場合の対象リポジトリ名。Qiitaでは NULL |
+| status      | success / failed                               |
+| started_at  | 同期開始日時(差分取得の起点として使用)         |
+| finished_at | 同期完了日時                                   |
+| message     | エラー内容など(任意)                           |
 
 - GitHubはリポジトリ単位でログを記録する(source=github, repository=リポジトリ名)。
   リポジトリごとにテーブルを分けるのではなく、repository カラムで区別する。
