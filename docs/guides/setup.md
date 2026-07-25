@@ -43,7 +43,7 @@ services:
     volumes:
       - .:/app
     ports:
-      - "3000:3000"
+      - '3000:3000'
     command: npm run dev
 ```
 
@@ -109,3 +109,114 @@ docker compose up
   今回は元の内容を復元せず、Nuxt生成のものをそのまま採用する判断とした。
 - **npmのバグ**: `Cannot read properties of null (reading 'edgesOut')` は
   npm 10.x系の既知バグ(Arborist関連)。`npm install -g npm@latest`で解消した。
+
+## Lint / Formatter の設定
+
+参考: [@nuxt/eslint公式ドキュメント](https://eslint.nuxt.com/packages/module)
+
+### 構成の判断
+
+- ESLint(コード品質チェック)とPrettier(フォーマット)は役割が異なるため、
+  **両方導入**することにした。
+- 一般的にESLintとPrettierは「フォーマット系ルールが競合する」と言われることが多いが、
+  `@nuxt/eslint` は**デフォルトではstylistic(フォーマット関連)ルールを有効化しない**仕様であり、
+  今回はそもそも競合しない(`eslint-config-prettier`のような追加調整も不要)。
+  ESLint側でフォーマットも管理したい場合のみ、`nuxt.config.ts`で
+  `eslint: { config: { stylistic: true } }` を指定する(今回は指定していない)。
+- Prettierは実務で広く使われているため、後から導入するとコード量が増えた分だけ
+  一括フォーマットの差分が大きくなる。導入するなら早い段階(今回のようにコードがほぼ空の時点)が
+  コストが低い。
+
+### 実行したコマンド
+
+```bash
+docker compose up            # ターミナルA: 開発サーバーを起動したままにする
+docker compose exec web bash # ターミナルB: 起動中のコンテナに入って作業する
+
+# コンテナ内
+npx nuxt module add eslint   # @nuxt/eslintの追加(package.json依存追加 + nuxt.config.ts自動編集)
+npm install -D prettier
+```
+
+- `docker compose run --rm` と `docker compose exec` の違い:
+  `run`は**新しい使い捨てコンテナ**を作って1回限りのコマンドを実行する。
+  `exec`は**すでに起動中のコンテナ**の中に入って作業する。
+  複数コマンドを連続で試す作業は`exec`で中に入った方が効率的。
+- `npx nuxt module add eslint` の `npx nuxt`: プロジェクト作成時の`npm create nuxt@latest`
+  (この時点では`nuxt`パッケージ自体がまだ存在しないため一時取得していた)とは異なり、
+  今回は`package.json`にすでに`nuxt`パッケージがインストール済みのため、
+  `npx`は新規取得ではなく**ローカルにインストール済みの`nuxt`コマンド**を実行する。
+  `eslint.config.mjs`(ESLint設定ファイル)は、コマンド実行時点ではなく
+  **その後開発サーバーを起動したタイミングで自動生成**される。
+
+### 用意したファイル
+
+**`prettier.config.js`**(`package.json`の`"type": "module"`指定により`export default`形式)
+
+```js
+export default {
+  semi: true, // 文末にセミコロンを付ける(Prettierデフォルトと同じだが明示)
+  singleQuote: true, // 文字列はシングルクォートに統一
+  trailingComma: 'all', // 配列・オブジェクトの末尾にもカンマ(差分を最小化)
+  printWidth: 80, // 1行の最大文字数
+  tabWidth: 2, // インデント幅
+};
+```
+
+- Prettierの設定ファイル名は複数選べる(`.prettierrc`(JSON) / `.prettierrc.json` /
+  `.prettierrc.yml` / `.prettierrc.js` / `.prettierrc.cjs` / `prettier.config.js` /
+  `prettier.config.cjs` など)。**コメントを書きたい場合はJSON系ではなくJS系を選ぶ**必要がある
+  (JSONの仕様上コメントが書けないため)。今回はコメントを残したかったので
+  `prettier.config.js`を採用した。
+
+**`.prettierignore`**
+
+```
+.nuxt
+.output
+.data
+node_modules
+dist
+```
+
+- `.gitignore`と書き方(構文)は同じで、対象がGit管理ではなく
+  **Prettierによるフォーマット対象からの除外**という違いだけ。
+  ビルド生成物・依存パッケージなど「自分たちで書いていないコード」を除外している。
+
+**`.vscode/settings.json`**(保存時に自動フォーマット)
+
+```json
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "[vue]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
+```
+
+- `.vue`ファイルは、VSCodeのVue関連拡張機能が独自にデフォルトフォーマッターとして
+  登録している場合があり、それが全体設定(`editor.defaultFormatter`)より優先されてしまうことがある。
+  VSCodeは**言語ごとの個別設定(`"[言語ID]"`)が全体設定より優先される**仕様のため、
+  `.vue`用に明示的に上書きする必要があった。
+- 設定変更後は、VSCodeのウィンドウリロード(`Cmd+Shift+P` → `Reload Window`)が必要な場合がある。
+- `.vscode`はこのプロジェクトの`.gitignore`では除外していないため、
+  このままコミットしてチーム(自分自身も含め将来の環境)で設定を共有する運用とした。
+
+### 注意点
+
+- **保存時フォーマットとコマンド実行(`npm run format`)の使い分け**:
+  VSCode上で編集する限り保存時フォーマットで完結し、コマンドの出番は普段ほぼ無い。
+  ただし以下のケースのため、コマンド自体は残しておく価値がある。
+  - Claude Codeなどエディタを介さない(保存イベントが発生しない)経路でのファイル編集
+  - 将来CIを導入した際の`prettier --check`によるフォーマット崩れの検知
+  - 既存コード全体への一括フォーマット
+- **Vueテンプレート内のクォートは変換されない**: `<template>`内の地の文(表示テキスト)は
+  JS/TSの文字列リテラルではなくHTML的なテキストとして扱われるため、
+  `singleQuote`設定の対象外(そのため一見「効いていない」ように見えることがある)。
+  `<script setup>`内のJS文字列であれば通常通り変換される。
+- **設計書(docs/配下のMarkdown)へのフォーマット適用**: `npm run format`実行により
+  Markdownのテーブル列幅が統一される等の変更が入る。内容(文章)自体は変わらない安全な整形だが、
+  Prettierは列幅を文字数基準で計算するため、日本語混じりのテーブルは
+  生テキスト上では厳密には揃って見えないことがある(レンダリング後の見た目には影響しない)。
+  今回は対象から除外せず、そのまま適用する運用とした。
