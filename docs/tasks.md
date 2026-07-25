@@ -10,7 +10,7 @@
 
 - [x] Nuxt 4 プロジェクトの初期化
 - [x] Docker で開発環境を起動できるようにする(Dockerfile / compose)
-- [ ] Lint / Formatter の設定(コーディング規約)
+- [x] Lint / Formatter の設定(コーディング規約)
 - [ ] バックエンドAPIの接続先(ベースURL)を環境変数で持つ仕組み
 - [ ] 初回セットアップ手順を `docs/guides/setup.md` に記録する
 
