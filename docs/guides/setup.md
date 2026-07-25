@@ -1,4 +1,4 @@
-# 環境構築手順(フェーズ0)
+# 環境構築手順(フェーズ1)
 
 Nuxt 4 プロジェクトを Docker 上でゼロから立ち上げた際の手順・判断まとめ。
 実務で途中から参画する場合(すでに `package.json` がある場合)は、
@@ -220,3 +220,43 @@ dist
   Prettierは列幅を文字数基準で計算するため、日本語混じりのテーブルは
   生テキスト上では厳密には揃って見えないことがある(レンダリング後の見た目には影響しない)。
   今回は対象から除外せず、そのまま適用する運用とした。
+
+## APIベースURLの環境変数化
+
+Nuxtの `runtimeConfig` を使って、バックエンドAPIのベースURLを環境変数から読み込めるようにした。
+仕組みの詳細(命名規則・public/privateの違いなど)は `docs/guides/nuxt/runtime-config.md` を参照。
+
+### 用意したファイル
+
+**`nuxt.config.ts`**(抜粋)
+
+```ts
+runtimeConfig: {
+  public: {
+    // .envの NUXT_PUBLIC_API_BASE_URL で上書きされる。ここはデフォルト値(未設定時のフォールバック)
+    apiBaseUrl: '',
+  },
+},
+```
+
+**`.env`** / **`.env.example`**
+
+```
+NUXT_PUBLIC_API_BASE_URL=http://localhost:3001
+```
+
+- バックエンドは別リポジトリで未着手のため、ポート番号は仮の値。実際の値が決まったら差し替える。
+- `.env.example` にはコメントで用途を記載する運用とした。
+
+**`compose.yml`**(`env_file`を追加)
+
+```yaml
+services:
+  web:
+    env_file:
+      - .env
+```
+
+- `docker compose` はプロジェクト直下の `.env` を自動で読み込むが、それは
+  `compose.yml`内の変数展開(`${VAR}`)のためだけで、コンテナ内プロセスの環境変数には
+  自動で渡らない。コンテナ内で動く Nuxt に値を渡すには `env_file` の明示指定が必要だった。
