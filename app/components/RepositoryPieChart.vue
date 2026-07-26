@@ -1,23 +1,29 @@
 <script setup lang="ts">
 import { Doughnut } from 'vue-chartjs';
 import { getCommitsByRepositoryMock } from '~/mocks/dashboard';
+import type { PeriodRange } from '~/utils/period';
 
-const byRepository = getCommitsByRepositoryMock();
+const props = defineProps<{
+  periodRange: PeriodRange;
+}>();
+
+// periodRangeが変わるたびに自動で再計算される
+const byRepository = computed(() => getCommitsByRepositoryMock(props.periodRange));
 
 const COLORS = ['#378ADD', '#1D9E75', '#D85A30', '#7F77DD'];
 
 const chartData = computed(() => ({
-  labels: byRepository.map((item) => item.repository),
+  labels: byRepository.value.map((item) => item.repository),
   datasets: [
     {
-      data: byRepository.map((item) => item.count),
+      data: byRepository.value.map((item) => item.count),
       backgroundColor: COLORS,
     },
   ],
 }));
 
 const totalCount = computed(() =>
-  byRepository.reduce((sum, item) => sum + item.count, 0),
+  byRepository.value.reduce((sum, item) => sum + item.count, 0),
 );
 
 // 割合(%)の表示用。0件のリポジトリは0%として自然に表示される(凡例からは除外しない)
@@ -43,7 +49,10 @@ const chartOptions = {
         <Doughnut :data="chartData" :options="chartOptions" />
       </div>
       <ul class="legend">
-        <li v-for="(item, index) in byRepository" :key="item.repository">
+        <li
+          v-for="(item, index) in byRepository"
+          :key="item.repository"
+        >
           <span class="swatch" :style="{ background: COLORS[index] }" />
           {{ item.repository }}　{{ percentage(item.count) }}%
         </li>

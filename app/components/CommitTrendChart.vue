@@ -4,6 +4,11 @@ import {
   TRACKED_REPOSITORIES,
   getCommitsTimeseriesMock,
 } from '~/mocks/dashboard';
+import type { PeriodRange } from '~/utils/period';
+
+const props = defineProps<{
+  periodRange: PeriodRange;
+}>();
 
 // セレクトボックスの「すべて(合計)」を表す特別な値。
 // getCommitsTimeseriesMock()は「リポジトリ未指定=合計」という仕様なので、
@@ -17,10 +22,11 @@ const repositoryOptions = [
 
 const selectedRepository = ref<string>(ALL_REPOSITORIES);
 
-// 選択中のリポジトリに応じたコミット推移データ。
-// selectedRepositoryが変わるたびに自動で再計算される(computed)。
+// 選択中のリポジトリ・期間に応じたコミット推移データ。
+// selectedRepositoryかperiodRangeが変わるたびに自動で再計算される(computed)。
 const timeseries = computed(() =>
   getCommitsTimeseriesMock(
+    props.periodRange,
     selectedRepository.value === ALL_REPOSITORIES
       ? undefined
       : selectedRepository.value,
