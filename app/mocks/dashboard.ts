@@ -45,23 +45,57 @@ export function getQiitaSummaryMock(): QiitaSummary {
   };
 }
 
-export function getCommitsTimeseriesMock(): CommitTimeseriesPoint[] {
-  // 直近1年ぶんの週別データを機械的に生成する(グラフ描画の確認用)
+// リポジトリ名から簡易的な数値を作る(同じリポジトリなら毎回同じ波形になるようにするため)
+function hashString(value: string): number {
+  let hash = 0;
+  for (const char of value) {
+    hash = (hash * 31 + char.charCodeAt(0)) % 1000;
+  }
+  return hash;
+}
+
+function getCommitsTimeseriesForRepository(
+  repository: string,
+): CommitTimeseriesPoint[] {
   const weeks = 52;
   const today = new Date();
+  const seed = hashString(repository);
   const points: CommitTimeseriesPoint[] = [];
 
   for (let i = weeks - 1; i >= 0; i--) {
     const date = new Date(today);
     date.setDate(date.getDate() - i * 7);
     const period = date.toISOString().slice(0, 10);
-    // それらしく波打つ数値(完全ランダムだと荒れすぎるため緩やかに変動させる)
-    const base = 15 + Math.sin(i / 4) * 8;
-    const noise = Math.random() * 6;
+    // それらしく波打つ数値(リポジトリごとに位相・振幅を変えて、見た目にバリエーションを出す)
+    const base = 5 + Math.sin(i / 4 + seed) * (4 + (seed % 5));
+    const noise = Math.random() * 3;
     points.push({ period, count: Math.max(0, Math.round(base + noise)) });
   }
 
   return points;
+}
+
+export function getCommitsTimeseriesMock(
+  repository?: string,
+): CommitTimeseriesPoint[] {
+  if (repository) {
+    return getCommitsTimeseriesForRepository(repository);
+  }
+
+  // リポジトリ未指定(すべて合計)の場合は、各リポジトリの値を週ごとに合算する
+  const perRepository = TRACKED_REPOSITORIES.map((repo) =>
+    getCommitsTimeseriesForRepository(repo),
+  );
+
+  return (
+    perRepository[0]?.map((point, index) => ({
+      period: point.period,
+      count: perRepository.reduce(
+        (sum, series) => sum + (series[index]?.count ?? 0),
+        0,
+      ),
+    })) || []
+  );
 }
 
 export function getCommitsByRepositoryMock(): CommitsByRepository[] {
