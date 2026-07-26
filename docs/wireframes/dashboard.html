@@ -200,6 +200,21 @@
         margin-right: 6px;
         vertical-align: middle;
       }
+      .source-section {
+        margin-bottom: 28px;
+      }
+      .section-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 12px;
+      }
+      .hint {
+        font-size: 12px;
+        color: var(--text-muted);
+      }
     </style>
   </head>
   <body>
@@ -219,195 +234,214 @@
       </aside>
 
       <div class="main">
-        <div class="toolbar">
-          <div class="left">
-            <span class="label">期間</span>
-            <select>
-              <option>直近1年</option>
-              <option>直近6ヶ月</option>
-              <option>直近3ヶ月</option>
-              <option>任意期間…</option>
-            </select>
-          </div>
-          <button>↻ 同期</button>
-        </div>
+        <section class="source-section">
+          <div class="section-title"><span class="src-icon"></span>GitHub</div>
 
-        <div class="cards">
-          <div class="card">
-            <div class="card-head">
-              <div class="card-title"><span class="src-icon"></span>GitHub</div>
-              <span class="arrow">→</span>
+          <div class="toolbar">
+            <div class="left">
+              <span class="label">期間</span>
+              <select>
+                <option>直近1年</option>
+                <option>直近6ヶ月</option>
+                <option>直近3ヶ月</option>
+                <option>直近1ヶ月</option>
+              </select>
             </div>
-            <div class="metrics">
-              <div>
-                <div class="metric-label">コミット総数</div>
-                <div class="metric-value">1,284</div>
-              </div>
-              <div>
-                <div class="metric-label">PR総数</div>
-                <div class="metric-value">86</div>
-              </div>
-            </div>
+            <button>↻ GitHub同期</button>
           </div>
-          <div class="card">
-            <div class="card-head">
-              <div class="card-title"><span class="src-icon"></span>Qiita</div>
-              <span class="arrow">→</span>
-            </div>
-            <div class="metrics">
-              <div>
-                <div class="metric-label">記事数</div>
-                <div class="metric-value">18</div>
-              </div>
-              <div>
-                <div class="metric-label">合計view</div>
-                <div class="metric-value">42,910</div>
-              </div>
-              <div>
-                <div class="metric-label">合計LGTM</div>
-                <div class="metric-value">356</div>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        <div class="panel">
-          <div class="panel-head">
-            <span class="panel-title">コミット推移（週別）</span>
-            <select>
-              <option>すべて（合計）</option>
-              <option>repo-alpha</option>
-              <option>repo-beta</option>
-              <option>repo-gamma</option>
-              <option>repo-delta</option>
-            </select>
-          </div>
-          <svg
-            viewBox="0 0 620 180"
-            style="width: 100%; height: auto"
-            role="img"
-            aria-label="コミット推移の折れ線グラフ"
-          >
-            <line
-              x1="40"
-              y1="150"
-              x2="600"
-              y2="150"
-              stroke="var(--border-strong)"
-              stroke-width="1"
-            />
-            <line
-              x1="40"
-              y1="20"
-              x2="40"
-              y2="150"
-              stroke="var(--border-strong)"
-              stroke-width="1"
-            />
-            <polyline
-              points="40,120 120,90 200,110 280,60 360,75 440,40 520,65 600,35"
-              fill="none"
-              stroke="#378ADD"
-              stroke-width="2"
-            />
-            <circle cx="120" cy="90" r="3" fill="#378ADD" />
-            <circle cx="280" cy="60" r="3" fill="#378ADD" />
-            <circle cx="440" cy="40" r="3" fill="#378ADD" />
-            <circle cx="600" cy="35" r="3" fill="#378ADD" />
-            <text x="40" y="168" fill="var(--text-muted)" font-size="11">
-              4月
-            </text>
-            <text x="300" y="168" fill="var(--text-muted)" font-size="11">
-              7月
-            </text>
-            <text x="560" y="168" fill="var(--text-muted)" font-size="11">
-              10月
-            </text>
-          </svg>
-        </div>
+          <div class="cards">
+            <div class="card">
+              <div class="card-head">
+                <div class="card-title">
+                  <span class="src-icon"></span>GitHub
+                </div>
+                <span class="arrow">→</span>
+              </div>
+              <div class="metrics">
+                <div>
+                  <div class="metric-label">コミット総数</div>
+                  <div class="metric-value">1,284</div>
+                </div>
+                <div>
+                  <div class="metric-label">PR総数</div>
+                  <div class="metric-value">86</div>
+                </div>
+              </div>
+            </div>
 
-        <div class="panel">
-          <div class="panel-title" style="margin-bottom: 12px">
-            リポジトリ別コミット数の割合
+            <div class="panel" style="margin-bottom: 0">
+              <div class="panel-title" style="margin-bottom: 12px">
+                リポジトリ別コミット数の割合
+              </div>
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 24px;
+                  flex-wrap: wrap;
+                "
+              >
+                <svg
+                  viewBox="0 0 120 120"
+                  style="width: 120px; height: 120px"
+                  role="img"
+                  aria-label="リポジトリ別コミット割合の円グラフ"
+                >
+                  <circle
+                    cx="60"
+                    cy="60"
+                    r="50"
+                    fill="none"
+                    stroke="#378ADD"
+                    stroke-width="20"
+                    stroke-dasharray="140 314"
+                    transform="rotate(-90 60 60)"
+                  />
+                  <circle
+                    cx="60"
+                    cy="60"
+                    r="50"
+                    fill="none"
+                    stroke="#1D9E75"
+                    stroke-width="20"
+                    stroke-dasharray="80 314"
+                    stroke-dashoffset="-140"
+                    transform="rotate(-90 60 60)"
+                  />
+                  <circle
+                    cx="60"
+                    cy="60"
+                    r="50"
+                    fill="none"
+                    stroke="#D85A30"
+                    stroke-width="20"
+                    stroke-dasharray="55 314"
+                    stroke-dashoffset="-220"
+                    transform="rotate(-90 60 60)"
+                  />
+                  <circle
+                    cx="60"
+                    cy="60"
+                    r="50"
+                    fill="none"
+                    stroke="#7F77DD"
+                    stroke-width="20"
+                    stroke-dasharray="39 314"
+                    stroke-dashoffset="-275"
+                    transform="rotate(-90 60 60)"
+                  />
+                </svg>
+                <div class="legend">
+                  <div>
+                    <span class="swatch" style="background: #378add"></span
+                    >repo-alpha　45%
+                  </div>
+                  <div>
+                    <span class="swatch" style="background: #1d9e75"></span
+                    >repo-beta　26%
+                  </div>
+                  <div>
+                    <span class="swatch" style="background: #d85a30"></span
+                    >repo-gamma　17%
+                  </div>
+                  <div>
+                    <span class="swatch" style="background: #7f77dd"></span
+                    >repo-delta　12%
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div
-            style="
-              display: flex;
-              align-items: center;
-              gap: 24px;
-              flex-wrap: wrap;
-            "
-          >
+
+          <div class="panel">
+            <div class="panel-head">
+              <span class="panel-title">コミット推移（週別）</span>
+              <select>
+                <option>すべて（合計）</option>
+                <option>repo-alpha</option>
+                <option>repo-beta</option>
+                <option>repo-gamma</option>
+                <option>repo-delta</option>
+              </select>
+            </div>
             <svg
-              viewBox="0 0 120 120"
-              style="width: 120px; height: 120px"
+              viewBox="0 0 620 180"
+              style="width: 100%; height: auto"
               role="img"
-              aria-label="リポジトリ別コミット割合の円グラフ"
+              aria-label="コミット推移の折れ線グラフ"
             >
-              <circle
-                cx="60"
-                cy="60"
-                r="50"
+              <line
+                x1="40"
+                y1="150"
+                x2="600"
+                y2="150"
+                stroke="var(--border-strong)"
+                stroke-width="1"
+              />
+              <line
+                x1="40"
+                y1="20"
+                x2="40"
+                y2="150"
+                stroke="var(--border-strong)"
+                stroke-width="1"
+              />
+              <polyline
+                points="40,120 120,90 200,110 280,60 360,75 440,40 520,65 600,35"
                 fill="none"
                 stroke="#378ADD"
-                stroke-width="20"
-                stroke-dasharray="140 314"
-                transform="rotate(-90 60 60)"
+                stroke-width="2"
               />
-              <circle
-                cx="60"
-                cy="60"
-                r="50"
-                fill="none"
-                stroke="#1D9E75"
-                stroke-width="20"
-                stroke-dasharray="80 314"
-                stroke-dashoffset="-140"
-                transform="rotate(-90 60 60)"
-              />
-              <circle
-                cx="60"
-                cy="60"
-                r="50"
-                fill="none"
-                stroke="#D85A30"
-                stroke-width="20"
-                stroke-dasharray="55 314"
-                stroke-dashoffset="-220"
-                transform="rotate(-90 60 60)"
-              />
-              <circle
-                cx="60"
-                cy="60"
-                r="50"
-                fill="none"
-                stroke="#7F77DD"
-                stroke-width="20"
-                stroke-dasharray="39 314"
-                stroke-dashoffset="-275"
-                transform="rotate(-90 60 60)"
-              />
+              <circle cx="120" cy="90" r="3" fill="#378ADD" />
+              <circle cx="280" cy="60" r="3" fill="#378ADD" />
+              <circle cx="440" cy="40" r="3" fill="#378ADD" />
+              <circle cx="600" cy="35" r="3" fill="#378ADD" />
+              <text x="40" y="168" fill="var(--text-muted)" font-size="11">
+                4月
+              </text>
+              <text x="300" y="168" fill="var(--text-muted)" font-size="11">
+                7月
+              </text>
+              <text x="560" y="168" fill="var(--text-muted)" font-size="11">
+                10月
+              </text>
             </svg>
-            <div class="legend">
-              <div>
-                <span class="swatch" style="background: #378add"></span
-                >repo-alpha　45%
+          </div>
+        </section>
+
+        <section class="source-section">
+          <div class="section-title"><span class="src-icon"></span>Qiita</div>
+
+          <div class="toolbar">
+            <span class="hint">期間セレクタとは連動せず、常に全期間の値を表示</span>
+            <button>↻ Qiita同期</button>
+          </div>
+
+          <div class="cards">
+            <div class="card">
+              <div class="card-head">
+                <div class="card-title">
+                  <span class="src-icon"></span>Qiita
+                </div>
               </div>
-              <div>
-                <span class="swatch" style="background: #1d9e75"></span
-                >repo-beta　26%
-              </div>
-              <div>
-                <span class="swatch" style="background: #d85a30"></span
-                >repo-gamma　17%
-              </div>
-              <div>
-                <span class="swatch" style="background: #7f77dd"></span
-                >repo-delta　12%
+              <div class="metrics">
+                <div>
+                  <div class="metric-label">記事数</div>
+                  <div class="metric-value">18</div>
+                </div>
+                <div>
+                  <div class="metric-label">合計view</div>
+                  <div class="metric-value">42,910</div>
+                </div>
+                <div>
+                  <div class="metric-label">合計LGTM</div>
+                  <div class="metric-value">356</div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </section>
       </div>
     </div>
   </body>
