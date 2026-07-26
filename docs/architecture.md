@@ -147,6 +147,12 @@
 
 ## 5. 画面設計(確定分)
 
+各画面のレイアウトイメージ(ワイヤーフレーム)を `docs/wireframes/` に置いている。
+レイアウトの具体像は以下を参照(数値はダミー・レイアウト確認用):
+
+- ダッシュボード: `docs/wireframes/dashboard.html`
+- GitHub詳細: `docs/wireframes/github-detail.html`
+
 ### 5.1 共通レイアウト
 
 全画面で共通の外枠を持つ。左サイドメニュー + 右メインエリアの2カラム構成。

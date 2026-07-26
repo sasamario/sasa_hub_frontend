@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ワイヤーフレーム: ダッシュボード</title>
+    <style>
+      :root {
+        --border: #e2e2e0;
+        --border-strong: #cfcfcc;
+        --surface-1: #faf9f7;
+        --surface-2: #ffffff;
+        --text-primary: #1a1a18;
+        --text-secondary: #55554f;
+        --text-muted: #8a8a82;
+        --bg-accent: #eaf2fb;
+        --text-accent: #1a5fb4;
+        --radius: 8px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family:
+          -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans',
+          'Noto Sans JP', sans-serif;
+        color: var(--text-primary);
+        background: #f4f3f1;
+        padding: 24px;
+      }
+      .note {
+        max-width: 980px;
+        margin: 0 auto 16px;
+        font-size: 13px;
+        color: var(--text-muted);
+      }
+      .frame {
+        max-width: 980px;
+        margin: 0 auto;
+        display: flex;
+        gap: 16px;
+        align-items: stretch;
+      }
+      select,
+      button {
+        font-family: inherit;
+        font-size: 13px;
+        padding: 6px 10px;
+        border: 0.5px solid var(--border-strong);
+        border-radius: var(--radius);
+        background: var(--surface-2);
+        color: var(--text-primary);
+      }
+      button {
+        cursor: pointer;
+      }
+      .sidebar {
+        flex: 0 0 170px;
+        background: var(--surface-1);
+        border: 0.5px solid var(--border);
+        border-radius: 12px;
+        padding: 12px 8px;
+      }
+      .brand {
+        font-size: 13px;
+        font-weight: 600;
+        padding: 6px 10px;
+        color: var(--text-secondary);
+      }
+      .nav {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        margin-top: 8px;
+      }
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 10px;
+        border-radius: var(--radius);
+        color: var(--text-secondary);
+        font-size: 14px;
+      }
+      .nav-item.active {
+        background: var(--bg-accent);
+        color: var(--text-accent);
+        font-weight: 500;
+      }
+      .nav-icon {
+        width: 18px;
+        height: 18px;
+        border: 1.5px solid currentColor;
+        border-radius: 4px;
+        flex-shrink: 0;
+        opacity: 0.7;
+      }
+      .main {
+        flex: 1 1 auto;
+        min-width: 0;
+      }
+      .toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+      }
+      .toolbar .left {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .label {
+        font-size: 13px;
+        color: var(--text-secondary);
+      }
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+      .card {
+        background: var(--surface-2);
+        border: 0.5px solid var(--border);
+        border-radius: 12px;
+        padding: 16px 20px;
+        cursor: pointer;
+      }
+      .card-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+      }
+      .card-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 500;
+        font-size: 15px;
+      }
+      .src-icon {
+        width: 20px;
+        height: 20px;
+        border-radius: 5px;
+        background: var(--border-strong);
+        flex-shrink: 0;
+      }
+      .arrow {
+        color: var(--text-muted);
+        font-size: 16px;
+      }
+      .metrics {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+      .metric-label {
+        font-size: 13px;
+        color: var(--text-secondary);
+      }
+      .metric-value {
+        font-size: 22px;
+        font-weight: 500;
+      }
+      .panel {
+        background: var(--surface-2);
+        border: 0.5px solid var(--border);
+        border-radius: 12px;
+        padding: 16px 20px;
+        margin-bottom: 16px;
+      }
+      .panel-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .panel-title {
+        font-weight: 500;
+        font-size: 15px;
+      }
+      .legend {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        font-size: 13px;
+      }
+      .swatch {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 2px;
+        margin-right: 6px;
+        vertical-align: middle;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="note">
+      ワイヤーフレーム（レイアウト確認用・数値はダミー）: ダッシュボード画面
+    </div>
+    <div class="frame">
+      <aside class="sidebar">
+        <div class="brand">学習トラッカー</div>
+        <nav class="nav">
+          <div class="nav-item active">
+            <span class="nav-icon"></span>ダッシュボード
+          </div>
+          <div class="nav-item"><span class="nav-icon"></span>GitHub詳細</div>
+          <div class="nav-item"><span class="nav-icon"></span>Qiita詳細</div>
+        </nav>
+      </aside>
+
+      <div class="main">
+        <div class="toolbar">
+          <div class="left">
+            <span class="label">期間</span>
+            <select>
+              <option>直近1年</option>
+              <option>直近6ヶ月</option>
+              <option>直近3ヶ月</option>
+              <option>任意期間…</option>
+            </select>
+          </div>
+          <button>↻ 同期</button>
+        </div>
+
+        <div class="cards">
+          <div class="card">
+            <div class="card-head">
+              <div class="card-title"><span class="src-icon"></span>GitHub</div>
+              <span class="arrow">→</span>
+            </div>
+            <div class="metrics">
+              <div>
+                <div class="metric-label">コミット総数</div>
+                <div class="metric-value">1,284</div>
+              </div>
+              <div>
+                <div class="metric-label">PR総数</div>
+                <div class="metric-value">86</div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head">
+              <div class="card-title"><span class="src-icon"></span>Qiita</div>
+              <span class="arrow">→</span>
+            </div>
+            <div class="metrics">
+              <div>
+                <div class="metric-label">記事数</div>
+                <div class="metric-value">18</div>
+              </div>
+              <div>
+                <div class="metric-label">合計view</div>
+                <div class="metric-value">42,910</div>
+              </div>
+              <div>
+                <div class="metric-label">合計LGTM</div>
+                <div class="metric-value">356</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <span class="panel-title">コミット推移（週別）</span>
+            <select>
+              <option>すべて（合計）</option>
+              <option>repo-alpha</option>
+              <option>repo-beta</option>
+              <option>repo-gamma</option>
+              <option>repo-delta</option>
+            </select>
+          </div>
+          <svg
+            viewBox="0 0 620 180"
+            style="width: 100%; height: auto"
+            role="img"
+            aria-label="コミット推移の折れ線グラフ"
+          >
+            <line
+              x1="40"
+              y1="150"
+              x2="600"
+              y2="150"
+              stroke="var(--border-strong)"
+              stroke-width="1"
+            />
+            <line
+              x1="40"
+              y1="20"
+              x2="40"
+              y2="150"
+              stroke="var(--border-strong)"
+              stroke-width="1"
+            />
+            <polyline
+              points="40,120 120,90 200,110 280,60 360,75 440,40 520,65 600,35"
+              fill="none"
+              stroke="#378ADD"
+              stroke-width="2"
+            />
+            <circle cx="120" cy="90" r="3" fill="#378ADD" />
+            <circle cx="280" cy="60" r="3" fill="#378ADD" />
+            <circle cx="440" cy="40" r="3" fill="#378ADD" />
+            <circle cx="600" cy="35" r="3" fill="#378ADD" />
+            <text x="40" y="168" fill="var(--text-muted)" font-size="11">
+              4月
+            </text>
+            <text x="300" y="168" fill="var(--text-muted)" font-size="11">
+              7月
+            </text>
+            <text x="560" y="168" fill="var(--text-muted)" font-size="11">
+              10月
+            </text>
+          </svg>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title" style="margin-bottom: 12px">
+            リポジトリ別コミット数の割合
+          </div>
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              gap: 24px;
+              flex-wrap: wrap;
+            "
+          >
+            <svg
+              viewBox="0 0 120 120"
+              style="width: 120px; height: 120px"
+              role="img"
+              aria-label="リポジトリ別コミット割合の円グラフ"
+            >
+              <circle
+                cx="60"
+                cy="60"
+                r="50"
+                fill="none"
+                stroke="#378ADD"
+                stroke-width="20"
+                stroke-dasharray="140 314"
+                transform="rotate(-90 60 60)"
+              />
+              <circle
+                cx="60"
+                cy="60"
+                r="50"
+                fill="none"
+                stroke="#1D9E75"
+                stroke-width="20"
+                stroke-dasharray="80 314"
+                stroke-dashoffset="-140"
+                transform="rotate(-90 60 60)"
+              />
+              <circle
+                cx="60"
+                cy="60"
+                r="50"
+                fill="none"
+                stroke="#D85A30"
+                stroke-width="20"
+                stroke-dasharray="55 314"
+                stroke-dashoffset="-220"
+                transform="rotate(-90 60 60)"
+              />
+              <circle
+                cx="60"
+                cy="60"
+                r="50"
+                fill="none"
+                stroke="#7F77DD"
+                stroke-width="20"
+                stroke-dasharray="39 314"
+                stroke-dashoffset="-275"
+                transform="rotate(-90 60 60)"
+              />
+            </svg>
+            <div class="legend">
+              <div>
+                <span class="swatch" style="background: #378add"></span
+                >repo-alpha　45%
+              </div>
+              <div>
+                <span class="swatch" style="background: #1d9e75"></span
+                >repo-beta　26%
+              </div>
+              <div>
+                <span class="swatch" style="background: #d85a30"></span
+                >repo-gamma　17%
+              </div>
+              <div>
+                <span class="swatch" style="background: #7f77dd"></span
+                >repo-delta　12%
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
