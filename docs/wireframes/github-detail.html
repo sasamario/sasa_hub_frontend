@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ワイヤーフレーム: GitHub詳細</title>
+    <style>
+      :root {
+        --bg-page: #0c0c0e;
+        --border: #2a2a2e;
+        --border-strong: #3a3a40;
+        --surface-1: #17171a;
+        --surface-2: #1b1b1f;
+        --text-primary: #f2f2f3;
+        --text-secondary: #a1a1aa;
+        --text-muted: #71717a;
+        --bg-accent: #2454d1;
+        --text-accent: #ffffff;
+        --radius: 10px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family:
+          -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans',
+          'Noto Sans JP', sans-serif;
+        color: var(--text-primary);
+        background: var(--bg-page);
+        padding: 24px;
+      }
+      .note {
+        max-width: 980px;
+        margin: 0 auto 16px;
+        font-size: 13px;
+        color: var(--text-muted);
+      }
+      .frame {
+        max-width: 980px;
+        margin: 0 auto;
+        display: flex;
+        gap: 16px;
+        align-items: stretch;
+      }
+      select,
+      button {
+        font-family: inherit;
+        font-size: 13px;
+        padding: 6px 10px;
+        border: 0.5px solid var(--border-strong);
+        border-radius: var(--radius);
+        background: var(--surface-2);
+        color: var(--text-primary);
+      }
+      button {
+        cursor: pointer;
+      }
+      .sidebar {
+        flex: 0 0 170px;
+        background: var(--surface-1);
+        border: 0.5px solid var(--border);
+        border-radius: 12px;
+        padding: 12px 8px;
+      }
+      .brand {
+        font-size: 13px;
+        font-weight: 600;
+        padding: 6px 10px;
+        color: var(--text-secondary);
+      }
+      .nav {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        margin-top: 8px;
+      }
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 10px;
+        border-radius: var(--radius);
+        color: var(--text-secondary);
+        font-size: 14px;
+      }
+      .nav-item.active {
+        background: var(--bg-accent);
+        color: var(--text-accent);
+        font-weight: 500;
+      }
+      .main {
+        flex: 1 1 auto;
+        min-width: 0;
+      }
+      .page-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+      }
+      .page-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 18px;
+        font-weight: 500;
+      }
+      .label {
+        font-size: 13px;
+        color: var(--text-secondary);
+      }
+      .panel {
+        background: var(--surface-2);
+        border: 0.5px solid var(--border);
+        border-radius: 12px;
+        padding: 16px 20px;
+        margin-bottom: 16px;
+      }
+      .panel-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .panel-title {
+        font-weight: 500;
+        font-size: 15px;
+      }
+      .controls {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .toggle {
+        display: inline-flex;
+        border: 0.5px solid var(--border-strong);
+        border-radius: var(--radius);
+        overflow: hidden;
+      }
+      .toggle span {
+        padding: 4px 12px;
+        font-size: 13px;
+        color: var(--text-secondary);
+      }
+      .toggle span.on {
+        background: var(--bg-accent);
+        color: var(--text-accent);
+      }
+      .filters {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 4px;
+        border-bottom: 0.5px solid var(--border);
+      }
+      .r-date {
+        font-size: 12px;
+        color: var(--text-muted);
+        width: 82px;
+        flex-shrink: 0;
+      }
+      .badge {
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 10px;
+        flex-shrink: 0;
+      }
+      .badge.commit {
+        background: rgba(55, 138, 221, 0.18);
+        color: #7fb2ee;
+      }
+      .badge.pr {
+        background: rgba(29, 158, 117, 0.18);
+        color: #6fd6ae;
+      }
+      .r-repo {
+        font-size: 12px;
+        color: var(--text-secondary);
+        width: 90px;
+        flex-shrink: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .r-title {
+        font-size: 13px;
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .r-ext {
+        font-size: 15px;
+        color: var(--text-muted);
+        flex-shrink: 0;
+      }
+      .more {
+        display: flex;
+        justify-content: center;
+        margin-top: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="note">
+      ワイヤーフレーム（レイアウト確認用・数値はダミー）: GitHub詳細画面
+    </div>
+    <div class="frame">
+      <aside class="sidebar">
+        <div class="brand">学習トラッカー</div>
+        <nav class="nav">
+          <div class="nav-item">ダッシュボード</div>
+          <div class="nav-item active">GitHub詳細</div>
+          <div class="nav-item">Qiita詳細</div>
+        </nav>
+      </aside>
+
+      <div class="main">
+        <div class="page-head">
+          <div class="page-title">GitHub詳細</div>
+          <div style="display: flex; align-items: center; gap: 8px">
+            <span class="label">期間</span>
+            <select>
+              <option>直近1年</option>
+              <option>直近6ヶ月</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <span class="panel-title">コミット推移</span>
+            <div class="controls">
+              <div class="toggle">
+                <span>日</span><span class="on">週</span><span>月</span>
+              </div>
+              <select>
+                <option>すべて（合計）</option>
+                <option>repo-alpha</option>
+                <option>repo-beta</option>
+              </select>
+            </div>
+          </div>
+          <svg
+            viewBox="0 0 620 150"
+            style="width: 100%; height: auto"
+            role="img"
+            aria-label="コミット推移の折れ線グラフ"
+          >
+            <line
+              x1="40"
+              y1="120"
+              x2="600"
+              y2="120"
+              stroke="var(--border-strong)"
+              stroke-width="1"
+            />
+            <line
+              x1="40"
+              y1="20"
+              x2="40"
+              y2="120"
+              stroke="var(--border-strong)"
+              stroke-width="1"
+            />
+            <polyline
+              points="40,100 120,72 200,88 280,48 360,60 440,32 520,52 600,28"
+              fill="none"
+              stroke="#378ADD"
+              stroke-width="2"
+            />
+            <circle cx="280" cy="48" r="3" fill="#378ADD" />
+            <circle cx="440" cy="32" r="3" fill="#378ADD" />
+            <text x="40" y="140" fill="var(--text-muted)" font-size="11">
+              4月
+            </text>
+            <text x="300" y="140" fill="var(--text-muted)" font-size="11">
+              7月
+            </text>
+            <text x="560" y="140" fill="var(--text-muted)" font-size="11">
+              10月
+            </text>
+          </svg>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <span class="panel-title">活動一覧</span>
+            <div class="filters">
+              <select>
+                <option>全リポジトリ</option>
+                <option>repo-alpha</option>
+                <option>repo-beta</option>
+              </select>
+              <select>
+                <option>すべての種別</option>
+                <option>コミット</option>
+                <option>PR</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <span class="r-date">2026-07-20</span>
+            <span class="badge commit">commit</span>
+            <span class="r-repo">repo-alpha</span>
+            <span class="r-title">ログイン機能のバリデーション追加</span>
+            <span class="r-ext">↗</span>
+          </div>
+          <div class="row">
+            <span class="r-date">2026-07-19</span>
+            <span class="badge pr">PR #42</span>
+            <span class="r-repo">repo-beta</span>
+            <span class="r-title">APIレスポンスの型定義を整理</span>
+            <span class="r-ext">↗</span>
+          </div>
+          <div class="row">
+            <span class="r-date">2026-07-19</span>
+            <span class="badge commit">commit</span>
+            <span class="r-repo">repo-alpha</span>
+            <span class="r-title">フォームのスタイル調整</span>
+            <span class="r-ext">↗</span>
+          </div>
+          <div class="row">
+            <span class="r-date">2026-07-18</span>
+            <span class="badge commit">commit</span>
+            <span class="r-repo">repo-gamma</span>
+            <span class="r-title">READMEを更新</span>
+            <span class="r-ext">↗</span>
+          </div>
+
+          <div class="more"><button>さらに読み込む</button></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
