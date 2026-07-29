@@ -54,6 +54,18 @@ const chartOptions = {
     // データ系列が1本しかなく凡例が無くても分かりやすいため非表示にする
     legend: { display: false },
   },
+  // Chart.jsの目盛り・グリッド線はデフォルトが濃い色のため、
+  // ダークテーマの背景に合わせて明るい色を明示的に指定する
+  scales: {
+    x: {
+      ticks: { color: '#71717a' },
+      grid: { color: '#2a2a2e' },
+    },
+    y: {
+      ticks: { color: '#71717a' },
+      grid: { color: '#2a2a2e' },
+    },
+  },
 };
 </script>
 
@@ -77,8 +89,9 @@ const chartOptions = {
 
 <style scoped>
 .panel {
-  border: 1px solid #e2e2e0;
-  border-radius: 12px;
+  background: var(--surface-2);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius);
   padding: 16px 20px;
 }
 .panel-head {
