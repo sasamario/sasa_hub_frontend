@@ -6,16 +6,17 @@
     <title>ワイヤーフレーム: GitHub詳細</title>
     <style>
       :root {
-        --border: #e2e2e0;
-        --border-strong: #cfcfcc;
-        --surface-1: #faf9f7;
-        --surface-2: #ffffff;
-        --text-primary: #1a1a18;
-        --text-secondary: #55554f;
-        --text-muted: #8a8a82;
-        --bg-accent: #eaf2fb;
-        --text-accent: #1a5fb4;
-        --radius: 8px;
+        --bg-page: #0c0c0e;
+        --border: #2a2a2e;
+        --border-strong: #3a3a40;
+        --surface-1: #17171a;
+        --surface-2: #1b1b1f;
+        --text-primary: #f2f2f3;
+        --text-secondary: #a1a1aa;
+        --text-muted: #71717a;
+        --bg-accent: #2454d1;
+        --text-accent: #ffffff;
+        --radius: 10px;
       }
       * {
         box-sizing: border-box;
@@ -26,7 +27,7 @@
           -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans',
           'Noto Sans JP', sans-serif;
         color: var(--text-primary);
-        background: #f4f3f1;
+        background: var(--bg-page);
         padding: 24px;
       }
       .note {
@@ -88,14 +89,6 @@
         color: var(--text-accent);
         font-weight: 500;
       }
-      .nav-icon {
-        width: 18px;
-        height: 18px;
-        border: 1.5px solid currentColor;
-        border-radius: 4px;
-        flex-shrink: 0;
-        opacity: 0.7;
-      }
       .main {
         flex: 1 1 auto;
         min-width: 0;
@@ -114,13 +107,6 @@
         gap: 8px;
         font-size: 18px;
         font-weight: 500;
-      }
-      .src-icon {
-        width: 22px;
-        height: 22px;
-        border-radius: 5px;
-        background: var(--border-strong);
-        flex-shrink: 0;
       }
       .label {
         font-size: 13px;
@@ -192,12 +178,12 @@
         flex-shrink: 0;
       }
       .badge.commit {
-        background: #e6f1fb;
-        color: #0c447c;
+        background: rgba(55, 138, 221, 0.18);
+        color: #7fb2ee;
       }
       .badge.pr {
-        background: #e1f5ee;
-        color: #0f6e56;
+        background: rgba(29, 158, 117, 0.18);
+        color: #6fd6ae;
       }
       .r-repo {
         font-size: 12px;
@@ -235,19 +221,15 @@
       <aside class="sidebar">
         <div class="brand">学習トラッカー</div>
         <nav class="nav">
-          <div class="nav-item">
-            <span class="nav-icon"></span>ダッシュボード
-          </div>
-          <div class="nav-item active">
-            <span class="nav-icon"></span>GitHub詳細
-          </div>
-          <div class="nav-item"><span class="nav-icon"></span>Qiita詳細</div>
+          <div class="nav-item">ダッシュボード</div>
+          <div class="nav-item active">GitHub詳細</div>
+          <div class="nav-item">Qiita詳細</div>
         </nav>
       </aside>
 
       <div class="main">
         <div class="page-head">
-          <div class="page-title"><span class="src-icon"></span>GitHub詳細</div>
+          <div class="page-title">GitHub詳細</div>
           <div style="display: flex; align-items: center; gap: 8px">
             <span class="label">期間</span>
             <select>

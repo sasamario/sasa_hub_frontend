@@ -1,0 +1,51 @@
+/* ワイヤーフレーム(docs/wireframes/)の配色をアプリ全体の共通変数として定義する */
+:root {
+  --bg-page: #0c0c0e;
+  --border: #2a2a2e;
+  --border-strong: #3a3a40;
+  --surface-1: #17171a;
+  --surface-2: #1b1b1f;
+  --text-primary: #f2f2f3;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+  --bg-accent: #2454d1;
+  --text-accent: #ffffff;
+  --radius: 10px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    'Hiragino Sans',
+    'Noto Sans JP',
+    sans-serif;
+  color: var(--text-primary);
+  background: var(--bg-page);
+}
+
+select,
+button {
+  font-family: inherit;
+  font-size: 13px;
+  padding: 6px 10px;
+  border: 0.5px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  color: var(--text-primary);
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}

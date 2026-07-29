@@ -63,8 +63,9 @@ const chartOptions = {
 
 <style scoped>
 .panel {
-  border: 1px solid #e2e2e0;
-  border-radius: 12px;
+  background: var(--surface-2);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius);
   padding: 16px 20px;
 }
 .panel-title {

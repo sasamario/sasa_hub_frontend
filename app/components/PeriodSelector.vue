@@ -38,6 +38,6 @@ function onChange(event: Event) {
 }
 .period-selector__label {
   font-size: 13px;
-  color: #55554f;
+  color: var(--text-secondary);
 }
 </style>

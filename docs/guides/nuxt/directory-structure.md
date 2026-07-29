@@ -16,7 +16,7 @@ Nuxtは「決まった場所にファイルを置くだけで機能する」規�
 | `plugins/` | アプリ起動時に自動実行される初期化処理。サードパーティライブラリの登録などに使う。詳細: [plugins.md](./plugins.md) |
 | `middleware/` | ページ遷移時に割り込ませる処理(認証チェックなど) |
 | `utils/` | 置くだけで自動インポートされる、状態を持たない汎用関数 |
-| `assets/` | ビルド時に処理される画像・CSSなど(Webpack/Viteの処理対象) |
+| `assets/` | ビルド時に処理される画像・CSSなど(Webpack/Viteの処理対象)。詳細: [styling.md](./styling.md) |
 | `app.vue` | 大元のコンポーネント。詳細: [routing.md](./routing.md) |
 | `app.config.ts` | ビルド時に確定する公開設定値(実行時に変更されない値) |
 | `error.vue` | エラー画面のカスタマイズ用 |

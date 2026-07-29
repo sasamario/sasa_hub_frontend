@@ -104,7 +104,7 @@ const qiitaSummary = getQiitaSummaryMock();
 }
 .hint {
   font-size: 12px;
-  color: #8a8a82;
+  color: var(--text-muted);
 }
 .cards {
   display: grid;

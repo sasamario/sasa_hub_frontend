@@ -40,7 +40,7 @@ defineProps<{
   font-size: 15px;
 }
 .summary-card__arrow {
-  color: #8a8a82;
+  color: var(--text-muted);
 }
 .summary-card__metrics {
   display: flex;
@@ -49,7 +49,7 @@ defineProps<{
 }
 .summary-card__metric-label {
   font-size: 13px;
-  color: #55554f;
+  color: var(--text-secondary);
 }
 .summary-card__metric-value {
   font-size: 22px;

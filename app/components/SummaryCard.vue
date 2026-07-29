@@ -23,8 +23,9 @@ defineProps<{
 <style scoped>
 .summary-card {
   display: block;
-  border: 1px solid #e2e2e0;
-  border-radius: 12px;
+  background: var(--surface-2);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius);
   padding: 16px 20px;
   text-decoration: none;
   color: inherit;
