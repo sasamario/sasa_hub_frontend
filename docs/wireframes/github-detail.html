@@ -170,12 +170,24 @@
         color: var(--text-muted);
         width: 82px;
         flex-shrink: 0;
+        text-align: center;
       }
       .badge {
         font-size: 11px;
         padding: 2px 8px;
         border-radius: 10px;
         flex-shrink: 0;
+        width: 70px;
+        text-align: center;
+      }
+      .row-head {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 4px 4px 8px;
+        font-size: 11px;
+        color: var(--text-muted);
+        border-bottom: 0.5px solid var(--border-strong);
       }
       .badge.commit {
         background: rgba(55, 138, 221, 0.18);
@@ -190,6 +202,7 @@
         color: var(--text-secondary);
         width: 90px;
         flex-shrink: 0;
+        text-align: center;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -310,6 +323,14 @@
                 <option>PR</option>
               </select>
             </div>
+          </div>
+
+          <div class="row-head">
+            <span class="r-date">日付</span>
+            <span class="badge">種別</span>
+            <span class="r-repo">リポジトリ</span>
+            <span class="r-title">概要</span>
+            <span class="r-ext"></span>
           </div>
 
           <div class="row">
