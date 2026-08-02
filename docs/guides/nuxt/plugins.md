@@ -38,7 +38,9 @@ export default defineNuxtPlugin((nuxtApp) => {
 - `foo.server.ts`: サーバー側のみで実行
 
 Chart.jsはブラウザの`<canvas>`前提のライブラリのため、`chart.client.ts`のように
-クライアント限定にしている。
+クライアント限定にしている。ただし`.client.ts`にしても、**そのコンポーネントを
+使う側でSSR自体を回避する対応(`<ClientOnly>`)も別途必要**になる場合がある。
+詳細: [client-only.md](./client-only.md)。
 
 ## 新規追加時の注意
 

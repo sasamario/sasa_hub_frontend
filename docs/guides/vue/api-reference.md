@@ -12,3 +12,4 @@
 | `emit` | `defineEmits`の戻り値 | 実際に親へイベントを発火する関数。詳細: [props-emits.md](./props-emits.md) |
 | `v-model` | テンプレート構文(ディレクティブ) | props+emitのやり取りをまとめて書ける糖衣構文。詳細: [props-emits.md](./props-emits.md) |
 | `slot` | コンポーネント合成の仕組み | 親から渡された内容を子のテンプレート内に差し込む穴。詳細: [routing.md](../nuxt/routing.md)(レイアウト文脈で説明) |
+| `watch` | Composition API | 指定した値が変わるたびに任意の処理(副作用)を実行する。詳細: [composition-api.md](./composition-api.md) |
