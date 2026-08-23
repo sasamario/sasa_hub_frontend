@@ -31,6 +31,32 @@ export default defineNuxtPlugin((nuxtApp) => {
 });
 ```
 
+## `provide`の書き方(ショートハンド)
+
+`nuxtApp.provide(...)`を直接呼ぶ代わりに、関数の**戻り値**で`provide`を指定する
+書き方もできる(中身は同じだが、こちらの方が簡潔)。
+
+```ts
+export default defineNuxtPlugin(() => {
+  const api = $fetch.create({ baseURL: '...' });
+
+  return {
+    provide: { api }, // nuxtApp.provide('api', api) と同じ意味
+  };
+});
+```
+
+- `provide: { api }`の`api`という**キー名**が、実際に使う時の名前(`$api`)になる
+  (Nuxtが自動で先頭に`$`を付ける)。
+- 使う側:
+  ```ts
+  const { $api } = useNuxtApp();
+  $api('/api/github/summary');
+  ```
+
+今回の`app/plugins/api.ts`(共通APIクライアント)でこの書き方を使っている。
+`$fetch`/`$fetch.create`自体の詳細は[fetch.md](./fetch.md)を参照。
+
 ## ファイル名による実行タイミングの制御(再掲)
 
 - `foo.ts`: サーバー・クライアント両方で実行
