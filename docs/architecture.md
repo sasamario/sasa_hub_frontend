@@ -235,7 +235,7 @@ GitHubに絞って掘り下げる画面。ダッシュボードが「要約」�
 | GET      | `/api/qiita/summary`                | Qiitaサマリーカード(記事数・view合計・LGTM合計) | from, to                                   |
 | GET      | `/api/github/activities`            | 活動一覧(コミット/PR明細)                       | from, to, repository, type, limit, cursor  |
 | POST     | `/api/sync`                         | 全ソース一括同期                                | -                                          |
-| POST     | `/api/sync/github`                  | GitHubのみ同期                                  | mode(任意。diff(デフォルト) / full)       |
+| POST     | `/api/sync/github`                  | GitHubのみ同期                                  | mode(任意。diff(デフォルト) / full)        |
 | POST     | `/api/sync/qiita`                   | Qiitaのみ同期                                   | -                                          |
 
 補足:
@@ -335,12 +335,66 @@ GitHubとQiitaで方式が異なる。詳細な判断の経緯は ADR-0004 を�
 - 履歴が残るため、いつ失敗し・いつ復旧したかを追跡できる。
   将来的に同期ログ閲覧画面を設ける余地がある(拡張候補)。
 
-## 8. 未確定・今後の検討事項
+## 8. APIレスポンス形式・未確定事項
+
+### 8.1 APIレスポンス形式(確定分)
+
+- **配列を返すエンドポイントは `{ "data": [...] }` で統一する。**
+
+  ```jsonc
+  // GET /api/github/commits/timeseries
+  { "data": [{ "period": "2026-08-03", "count": 5 }] }
+
+  // GET /api/github/commits/by-repository
+  { "data": [{ "repository": "sasa_hub_backend", "count": 42 }] }
+
+  // GET /api/github/activities(カーソルはdataと同階層)
+  {
+    "data": [
+      {
+        "id": 123,
+        "type": "commit",
+        "repository": "...",
+        "title": "...",
+        "url": "...",
+        "activityDate": "2026-08-10T09:00:00.000Z",
+        "externalId": "..."
+      }
+    ],
+    "nextCursor": "2026-08-10T09:00:00.000Z_123"
+  }
+  ```
+
+- **単一オブジェクトを返すsummary系は包まずそのまま返す。**
+
+  ```jsonc
+  // GET /api/github/summary
+  { "commitCount": 1284, "prCount": 86 }
+
+  // GET /api/qiita/summary
+  { "articleCount": 18, "totalViews": 42910, "totalLikes": 356 }
+  ```
+
+- **日時はISO8601(UTC)文字列のまま返す。** JSTへの変換はフロント側の責務とする。
+  - ただし、timeseriesについてはバックエンドで日本時間に変換後集計しているので、フロント側での対応は不要
+
+- **同期APIは処理件数を返す。**
+
+  ```jsonc
+  // POST /api/sync/github
+  { "commitsCount": 12, "pullRequestsCount": 3 }
+
+  // POST /api/sync/qiita
+  { "count": 5 }
+
+  // POST /api/sync(一括)
+  { "github": { "commitsCount": 12, "pullRequestsCount": 3 }, "qiita": { "count": 5 } }
+  ```
+
+### 8.2 未確定・今後の検討事項
 
 - [ ] 手動記録(manual_records)のテーブル設計(カテゴリの持ち方)
 - [ ] Qiita詳細画面の設計
-- [ ] APIのレスポンス形式(各エンドポイントの返却JSON構造)の詳細化
-- [ ] 差分取得の起点が取れない初回時の取得範囲(どこまで遡るか)
 - [ ] 未マージPRの一覧での見せ方
 - [ ] コミット推移グラフの期間×粒度の組み合わせ制御(極端な組み合わせの抑制)
 - [ ] リポジトリ数が増えた場合の推移グラフ・円グラフの表示調整
