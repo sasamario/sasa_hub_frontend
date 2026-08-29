@@ -13,3 +13,5 @@
 | `v-model` | テンプレート構文(ディレクティブ) | props+emitのやり取りをまとめて書ける糖衣構文。詳細: [props-emits.md](./props-emits.md) |
 | `slot` | コンポーネント合成の仕組み | 親から渡された内容を子のテンプレート内に差し込む穴。詳細: [routing.md](../nuxt/routing.md)(レイアウト文脈で説明) |
 | `watch` | Composition API | 指定した値が変わるたびに任意の処理(副作用)を実行する。詳細: [composition-api.md](./composition-api.md) |
+| `onMounted` | Composition API(ライフサイクルフック) | コンポーネントが実際に画面に表示された直後に処理を実行する。詳細: [async-data.md](../nuxt/async-data.md) |
+| `useAsyncData` | Nuxt composable | データ取得+リアクティブな反映をまとめて面倒見てくれる。詳細: [async-data.md](../nuxt/async-data.md) |

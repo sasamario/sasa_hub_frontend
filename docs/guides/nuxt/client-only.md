@@ -33,4 +33,5 @@ Nuxtはサーバー側でもページを描画しようとするため、**サ�
 - ブラウザ専用のライブラリ(Chart.jsなど、`<canvas>`や`window`を前提にするもの)を
   使うコンポーネント
 - サーバーとクライアントで表示内容が食い違い、ハイドレーション警告
-  (`Hydration completed but contains mismatches`)が出てしまう箇所
+  (`Hydration completed but contains mismatches`)が出てしまう箇所。
+  ハイドレーション自体の詳細は[hydration.md](./hydration.md)参照。
