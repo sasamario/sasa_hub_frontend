@@ -39,10 +39,12 @@ const qiitaSummary = getQiitaSummaryMock();
           {{ githubSync.isSyncing.value ? '同期中…' : '↻ GitHub同期' }}
         </button>
       </div>
-      <p>
-        {{ periodRange.from.toLocaleDateString() }} 〜
-        {{ periodRange.to.toLocaleDateString() }}
-      </p>
+      <ClientOnly>
+        <p>
+          {{ periodRange.from.toLocaleDateString() }} 〜
+          {{ periodRange.to.toLocaleDateString() }}
+        </p>
+      </ClientOnly>
 
       <div class="cards">
         <SummaryCard
