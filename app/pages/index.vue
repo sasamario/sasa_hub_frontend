@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { DEFAULT_PERIOD_PRESET, resolvePeriodRange } from '~/utils/period';
-import { getGithubSummaryMock, getQiitaSummaryMock } from '~/mocks/dashboard';
+import { getQiitaSummaryMock } from '~/mocks/dashboard';
 
 const periodPreset = ref(DEFAULT_PERIOD_PRESET);
 const periodRange = computed(() => resolvePeriodRange(periodPreset.value));
@@ -20,8 +20,22 @@ function createSyncHandler() {
 const githubSync = createSyncHandler();
 const qiitaSync = createSyncHandler();
 
-// periodRangeが変わるたびに自動で再計算される
-const githubSummary = computed(() => getGithubSummaryMock(periodRange.value));
+const { getSummary } = useGithubApi();
+
+const { data: githubSummary, refresh } = useAsyncData(
+  'dashboard-github-summary',
+  () => getSummary(periodRange.value),
+  {
+    watch: [() => periodRange.value],
+    default: () => ({ commitCount: 0, prCount: 0 }),
+    immediate: false,
+  },
+);
+
+onMounted(() => {
+  refresh();
+});
+
 // Qiitaは最新値のみを保持する設計のため、期間セレクタとは連動させず常に全期間の値
 const qiitaSummary = getQiitaSummaryMock();
 </script>

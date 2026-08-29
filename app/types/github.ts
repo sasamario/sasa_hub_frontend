@@ -4,3 +4,8 @@ export interface CommitTimeseriesPoint {
 }
 
 export type Granularity = 'day' | 'week' | 'month';
+
+export interface GithubSummary {
+  commitCount: number;
+  prCount: number;
+}
