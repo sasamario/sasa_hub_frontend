@@ -14,7 +14,10 @@ const props = defineProps<{
 const ALL_REPOSITORIES = 'all';
 const repositoryOptions = [
   { value: ALL_REPOSITORIES, label: '全リポジトリ' },
-  ...TRACKED_REPOSITORIES.map((repo) => ({ value: repo, label: repo })),
+  ...TRACKED_REPOSITORIES.map((repo) => ({
+    value: repo,
+    label: getRepositoryShortName(repo),
+  })),
 ];
 // 表示リポジトリ
 const selectedRepository = ref<string>(ALL_REPOSITORIES);
@@ -125,7 +128,9 @@ function formatDate(date: Date): string {
             : 'commit'
         }}
       </span>
-      <span class="r-repo">{{ activity.repository }}</span>
+      <span class="r-repo">{{
+        getRepositoryShortName(activity.repository)
+      }}</span>
       <span class="r-title">{{ activity.title }}</span>
       <span class="r-ext">↗</span>
     </a>

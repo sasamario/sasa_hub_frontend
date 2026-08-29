@@ -4,10 +4,10 @@
 import type { PeriodRange } from '~/utils/period';
 
 export const TRACKED_REPOSITORIES = [
-  'sasa_tools',
-  'sasa_hub_frontend',
-  'sasa_hub_backend',
-  'public-learning-repository',
+  'sasamario/sasa_tools',
+  'sasamario/sasa_hub_frontend',
+  'sasamario/sasa_hub_backend',
+  'sasamario/public-learning-repository',
 ] as const;
 
 export interface GithubSummary {
@@ -102,21 +102,6 @@ function getCommitsTimeseriesForAllRepositories(): CommitTimeseriesPoint[] {
       ),
     })) ?? []
   );
-}
-
-export function getCommitsTimeseriesMock(
-  range: PeriodRange,
-  repository?: string,
-): CommitTimeseriesPoint[] {
-  const points = repository
-    ? getCommitsTimeseriesForRepository(repository)
-    : getCommitsTimeseriesForAllRepositories();
-
-  // 生成した52週分のうち、選択期間に含まれる週だけに絞り込む
-  return points.filter((point) => {
-    const date = new Date(point.period);
-    return date >= range.from && date <= range.to;
-  });
 }
 
 export function getCommitsByRepositoryMock(

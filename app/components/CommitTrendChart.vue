@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { Line } from 'vue-chartjs';
-import {
-  TRACKED_REPOSITORIES,
-  getCommitsTimeseriesMock,
-} from '~/mocks/dashboard';
+import { TRACKED_REPOSITORIES } from '~/mocks/dashboard';
 import type { PeriodRange } from '~/utils/period';
 
 const props = defineProps<{
@@ -11,27 +8,45 @@ const props = defineProps<{
 }>();
 
 // セレクトボックスの「すべて(合計)」を表す特別な値。
-// getCommitsTimeseriesMock()は「リポジトリ未指定=合計」という仕様なので、
 // この値が選ばれた時だけundefinedに変換して渡す(下のtimeseries参照)。
 const ALL_REPOSITORIES = 'all';
 
 const repositoryOptions = [
   { value: ALL_REPOSITORIES, label: 'すべて(合計)' },
-  ...TRACKED_REPOSITORIES.map((repo) => ({ value: repo, label: repo })),
+  ...TRACKED_REPOSITORIES.map((repo) => ({
+    value: repo,
+    label: getRepositoryShortName(repo),
+  })),
 ];
 
 const selectedRepository = ref<string>(ALL_REPOSITORIES);
 
+const { getCommitsTimeseries } = useGithubApi();
+
 // 選択中のリポジトリ・期間に応じたコミット推移データ。
-// selectedRepositoryかperiodRangeが変わるたびに自動で再計算される(computed)。
-const timeseries = computed(() =>
-  getCommitsTimeseriesMock(
-    props.periodRange,
-    selectedRepository.value === ALL_REPOSITORIES
-      ? undefined
-      : selectedRepository.value,
-  ),
+// selectedRepositoryかperiodRangeが変わるたびに自動で再計算される(watch)。
+const { data: timeseries, refresh } = useAsyncData(
+  'dashboard-commit-timeseries',
+  () =>
+    getCommitsTimeseries(
+      props.periodRange,
+      'week',
+      selectedRepository.value === ALL_REPOSITORIES
+        ? undefined
+        : selectedRepository.value,
+    ),
+  {
+    watch: [() => props.periodRange, selectedRepository],
+    default: () => [],
+    immediate: false, // 自動実行はオフにする
+  },
 );
+
+// onMountedは、コンポーネントがブラウザ上のDOMに描画（マウント）された後に実行されるライフサイクルフック
+// 描画直後に'dashboard-commit-timeseries'を実行
+onMounted(() => {
+  refresh(); // 画面表示時に明示的に実行
+});
 
 // vue-chartjsの<Line>コンポーネントに渡すデータ形式(Chart.jsの仕様に合わせた形)。
 // labels: X軸に並べるラベル(週の開始日)、datasets: 実際にプロットする数値列。

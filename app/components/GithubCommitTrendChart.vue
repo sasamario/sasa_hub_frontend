@@ -24,7 +24,10 @@ const granularity = ref<Granularity>('week');
 const ALL_REPOSITORIES = 'all';
 const repositoryOptions = [
   { value: ALL_REPOSITORIES, label: 'すべて(合計)' },
-  ...TRACKED_REPOSITORIES.map((repo) => ({ value: repo, label: repo })),
+  ...TRACKED_REPOSITORIES.map((repo) => ({
+    value: repo,
+    label: getRepositoryShortName(repo),
+  })),
 ];
 // 表示リポジトリ
 const selectedRepository = ref<string>(ALL_REPOSITORIES);

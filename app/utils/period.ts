@@ -29,3 +29,14 @@ export function resolvePeriodRange(preset: PeriodPreset): PeriodRange {
   from.setMonth(from.getMonth() - MONTHS_BY_PRESET[preset]);
   return { from, to };
 }
+
+// 期間をバックエンドに渡すパラメータ用に文字列形式に変換
+export function toPeriodQueryParams(range: PeriodRange): {
+  from: string;
+  to: string;
+} {
+  return {
+    from: toJstDateString(range.from),
+    to: toJstDateString(range.to),
+  };
+}
